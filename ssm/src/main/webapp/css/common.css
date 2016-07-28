@@ -1,0 +1,16 @@
+.search-more{
+	cursor:pointer;
+}
+
+.search-lock{
+	height: 40px;
+}
+
+.search-hide{
+	height: 40px;
+	display: none;
+}
+
+.select2-hidden-accessible{
+	display: none;
+}

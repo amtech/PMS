@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>edgar_learn_resource</artifactId>
+        <groupId>com.cjhb</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>portal</artifactId>
+    <packaging>war</packaging>
+    <name>com.cjhb.pmsportal</name>
+    <description>个人管理系统前台系统</description>
+
+
+
+    <!--配置依赖-->
+        <dependencies>
+            <!--依赖common模块-->
+            <dependency>
+                <groupId>com.cjhb.pms</groupId>
+                <artifactId>common</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <!--依赖实体模块-->
+            <dependency>
+                <groupId>com.cjhb.pms</groupId>
+                <artifactId>domain</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <!--依赖工具包模块-->
+            <dependency>
+                <groupId>com.cjhb.pms</groupId>
+                <artifactId>utils</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <!--依赖服务暴露模块-->
+            <dependency>
+                <groupId>com.cjhb.pms</groupId>
+                <artifactId>service</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <!--依赖dao接口-->
+            <dependency>
+                <groupId>com.cjhb.pms</groupId>
+                <artifactId>dao</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>4.1.7.RELEASE</version>
+            </dependency>
+        </dependencies>
+
+    <build>
+        <finalName>SSM_SpringAndSpringMVCAndMybatis</finalName>
+    </build>
+
+
+</project>
