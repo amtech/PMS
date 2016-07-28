@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.credit.dao.cache.CacheMapper">
+
+	  <resultMap id="BaseDataItemMap" type="com.credit.entity.system.BaseDataItem">
+	    <id column="ID" jdbcType="VARCHAR" property="id" />
+	    <result column="CODE" jdbcType="VARCHAR" property="code" />
+	    <result column="NAME" jdbcType="VARCHAR" property="name" />
+	    <result column="TYPEID" jdbcType="VARCHAR" property="typeId" />
+	    <result column="TYPECODE" jdbcType="VARCHAR" property="typeCode" />
+	  </resultMap>
+	  
+	<resultMap id="MenuRoleRelMap" type="map">
+	    <result column="menu_path" jdbcType="VARCHAR" property="menuPath" />
+	    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+	</resultMap>
+	
+	<resultMap id="cityItem" type="com.credit.comm.lucene.CityItem">
+	    <result column="id" jdbcType="VARCHAR" property="id" />
+	    <result column="text" jdbcType="VARCHAR" property="text" />
+	    <result column="level" jdbcType="VARCHAR" property="level" />
+	    <result column="pinyin" jdbcType="VARCHAR" property="pinyin" />
+	</resultMap>
+	
+	<resultMap id="MenuResult" type="com.credit.entity.system.AuMenu">
+	    <id column="ID" jdbcType="VARCHAR" property="id" />
+	    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+	    <result column="menu_code" jdbcType="VARCHAR" property="menuCode" />
+	    <result column="menu_level" jdbcType="VARCHAR" property="menuLevel" />
+	    <result column="has_child" jdbcType="VARCHAR" property="hasChild" />
+	    <result column="icon_code" jdbcType="VARCHAR" property="iconCode" />
+	    <result column="menu_path" jdbcType="VARCHAR" property="menuPath" />
+	    <result column="super_id" jdbcType="VARCHAR" property="superId" />
+	    <result column="menu_order" jdbcType="DECIMAL" property="menuOrder" />
+	  </resultMap>
+
+	<select id="getCityByType" parameterType="java.lang.String" resultMap="cityItem">
+		SELECT
+			ID as id,
+			CITY_NAME AS text,
+			CITY_TYPE AS level,
+			CITY_PINYIN as pinyin
+		FROM
+			AU_CITY
+		WHERE
+			IS_VALID = '1'
+		AND IS_DEL = '0'
+		AND CITY_TYPE &lt;= #{type,jdbcType=VARCHAR}
+		ORDER BY
+			CITY_CODE
+	</select>
+	
+	<select id="getBaseDataByCode" parameterType="java.lang.String" resultMap="BaseDataItemMap">
+	    SELECT ITEM.CODE,ITEM.NAME,ITEM.TYPECODE,ITEM.TYPEID,ITEM.ID
+	    FROM DD_BASEDATA_TYPE TYPE INNER JOIN 
+	    DD_BASEDATA_ITEM ITEM ON TYPE.CODE = ITEM.TYPECODE
+	    WHERE TYPE.IS_DEL = '0'
+			AND TYPE.IS_VALID = '1'
+			AND ITEM.IS_DEL = '0'
+			AND ITEM.IS_VALID = '1'
+			<if test="code != null and code !='' ">
+			AND ITEM.TYPECODE = #{code,jdbcType=VARCHAR}
+			</if>
+			ORDER BY ITEM.SEQNO
+	</select>
+	  
+	<select id="getNationality" parameterType="map" resultType="map">
+		select ID as id, NAME as text from emp_nationality
+	</select>
+	
+	<select id="getAllMenuRoleRel" parameterType="map" resultMap="MenuRoleRelMap">
+  	SELECT
+	menu.menu_path,
+	role.role_code
+	FROM
+		au_role_menu_rel rel
+	LEFT JOIN au_menu menu ON menu.id = rel.MENU_ID
+	LEFT JOIN au_role role ON role.id = rel.ROLE_ID
+	where rel.IS_DEL = '0'
+	and menu.menu_path != ''
+	order by menu.menu_path
+  </select>
+  
+  <select id="getAllMenu" parameterType="map" resultMap="MenuResult">
+  	SELECT
+		*
+	FROM
+		au_menu
+	WHERE
+		IS_DEL = '0'
+	AND IS_VALID = '1'
+  </select>
+</mapper>

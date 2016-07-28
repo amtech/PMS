@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+<!-- 
+	<classPathEntry location="D:/WorkSpace-64/credit/creditMgr/WebContent/WEB-INF/lib/mysql-connector-java-5.1.18-bin.jar" />
+ -->
+ 	<classPathEntry location="/Users/wengxiongfei/WorkSpace/creditMgr/WebContent/WEB-INF/lib/mysql-connector-java-5.1.18-bin.jar" />
+	
+	<context id="context">
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://139.196.45.132:3306/credit" userId="credit" password="123456" />
+		<javaModelGenerator targetPackage="com.credit.entity.customer" targetProject="creditMgr" />
+		<sqlMapGenerator targetPackage="com.credit.dao.customer.mapper" targetProject="creditMgr" />
+		<javaClientGenerator targetPackage="com.credit.dao.customer" targetProject="creditMgr" type="XMLMAPPER" />
+		<table schema="" tableName="ECIF" domainObjectName="Customer" enableCountByExample="false" 
+		enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+		</table>
+	</context>
+</generatorConfiguration>
