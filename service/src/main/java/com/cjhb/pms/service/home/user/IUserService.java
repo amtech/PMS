@@ -2,6 +2,8 @@ package com.cjhb.pms.service.home.user;/*
 * Copyright (c) 2016 www.51cjhb.com. All Rights Reserved.
 */
 
+import com.cjhb.pms.domain.home_pojo.UserInfo;
+
 /**
  * <p>Title: 用户管理服务接口</p>
  * <p>Description: 用户管理对外服务暴露入口</p>
@@ -11,5 +13,11 @@ package com.cjhb.pms.service.home.user;/*
  */
 public interface IUserService {
 
-	void getLoginUser(String username, String password);
+	/**
+	 * 根据用户名和密码查询用户信息
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
+	UserInfo login(String userName, String password);
 }

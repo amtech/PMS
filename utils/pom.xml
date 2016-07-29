@@ -15,5 +15,22 @@
     <name>com.cjhb.utils</name>
     <description>PMS管理项目工具包入口</description>
 
+    <!--管理依赖jar包-->
+    <dependencies>
+        <!--依赖公共管理包-->
+        <dependency>
+            <groupId>com.cjhb.pms</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+
+
+
+
+
+
+    </dependencies>
+
 
 </project>

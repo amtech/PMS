@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
+         id="WebApp_ID" version="3.0">
 
 <!--web.xml部署描述符文件详解-->
     <!--应用名称-->
@@ -22,6 +22,20 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:applicationContext.xml</param-value>
     </context-param>
+
+
+    <!--自定义jsp标签-->
+    <jsp-config>
+        <taglib>
+            <taglib-uri>/spring-form</taglib-uri>
+            <taglib-location>/WEB-INF/spring-form.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/spring</taglib-uri>
+            <taglib-location>/WEB-INF/spring.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
     <!-- 编码过滤器 -->
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -68,6 +82,15 @@
         <!-- 此处可以可以配置成*.do，对应struts的后缀习惯 -->
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/pages/404.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/pages/error.jsp</location>
+    </error-page>
 
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>

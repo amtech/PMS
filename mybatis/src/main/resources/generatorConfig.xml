@@ -187,9 +187,9 @@
     -->
         <!-- 指定数据库表 -->
         <!--tableName：数据库表名称，domainObjectName 对应生成的model和mapper文件名称，如果有多张表，复制配置多个table-->
-        <table tableName="user" domainObjectName="User">
+        <table tableName="home_user_info" domainObjectName="UserInfo">
             <!--如果有主键，配置主键-->
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
+            <generatedKey column="user_id" sqlStatement="Mysql" identity="true"></generatedKey>
         </table>
 
         <!--<table tableName="userinfo" >-->

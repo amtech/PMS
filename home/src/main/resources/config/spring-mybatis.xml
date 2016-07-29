@@ -11,31 +11,25 @@
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
     <!-- 自动扫描 -->
-    <context:component-scan base-package="com.cjhb.pms.dao" />
+    <context:component-scan base-package="com.cjhb.pms" />
 
     <!--引入数据库配置-->
     <import resource="classpath:config/spring-database.xml"/>
 
-
-    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        &lt;!&ndash;使用通配符方式来加载相关的Mapper配置文件 &ndash;&gt;
-        &lt;!&ndash; <property name="mapperLocations" value="classpath:com/cjhb/pms/dao/model/**/*Mapper.xml" /> &ndash;&gt;
-        &lt;!&ndash;抽取单独的mybatis配置文件 spring-mybatis&ndash;&gt;
-        <property name="configLocation" value="config/spring-mybatis.xml"/>
-    </bean>-->
-
     <!-- 生成SqlSessionFactory -->
-    <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+    <!-- Spring、MyBatis的整合，需要在 Spring 应用上下文中定义至少两样东西：一个SqlSessionFactory和至少一个数据映射器类（UserMapper->iocContext.xml） -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <!-- 自动扫描mapping.xml文件 -->
-        <property name="mapperLocations" value="classpath*:com/cjhb/pms/dao/**/*.xml"></property>
+        <!--配置mybaits 物理分页(抽取单独的mybatis配置文件)-->
+        <property name="configLocation" value="classpath:config/sqlMap-config.xml"/>
+        <!-- 自动扫描mapping.xml文件(使用通配符方式来加载相关的Mapper配置文件) -->
+        <property name="mapperLocations" value="classpath:com/cjhb/pms/dao/**/*.xml"/>
     </bean>
 
     <!-- 扫描相关的Mapper接口 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com/cjhb.pms/dao/mapper" />
+    <!-- Mapper接口所在包名，basePackage 属性是让你为映射器接口文件设置基本的包路径。 -->
+        <property name="basePackage" value="com.cjhb.pms.dao" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 
@@ -43,6 +37,20 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.cjhb.pms.dao" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+
+    <!-- 定义异常处理页面,只要发生了SQLException或者IOException异常，就会自动跳转到error.jsp页面 -->
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.sql.SQLException">error</prop>
+                <prop key="java.io.IOException">error</prop>
+            </props>
+        </property>
     </bean>
 
 </beans>

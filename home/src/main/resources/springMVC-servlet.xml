@@ -3,21 +3,24 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                        http://www.springframework.org/schema/context
-                        http://www.springframework.org/schema/context/spring-context-3.0.xsd
-                        http://www.springframework.org/schema/mvc
-                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+						http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+						http://www.springframework.org/schema/mvc
+						http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-4.1.xsd
+						http://www.springframework.org/schema/task
+						http://www.springframework.org/schema/task/spring-task-4.1.xsd">
 
-        <!-- 启用spring mvc 注解 -->
+<!-- 启用spring mvc 注解 -->
         <context:annotation-config />
 
          <!-- 默认的注解映射的支持 -->
         <mvc:annotation-driven/>
 
         <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
-        <context:component-scan base-package="com.cjhb.pms.home.controller" />
+        <context:component-scan base-package="com.cjhb.pms" />
 
         <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
         <!--<bean id="mappingJacksonHttpMessageConverter"
@@ -42,55 +45,98 @@
         </property>
         </bean>
 
-        <!-- 定义跳转的文件的前后缀 ，视图模式配置-->
-        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-            <!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->
-            <property name="prefix" value="/page/" />
-            <property name="suffix" value=".jsp" />
-        </bean>
 
-        <!-- 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->
-        <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-            <!-- 默认编码 -->
-            <property name="defaultEncoding" value="utf-8" />
-            <!-- 文件大小最大值 -->
-            <property name="maxUploadSize" value="10485760000" />
-            <!-- 内存中的最大值 -->
-            <property name="maxInMemorySize" value="40960" />
-        </bean>
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <!--记录请求时间，并打印日志，此拦截器放在第一个比较准-->
+        <mvc:interceptor>
+            <!-- 对所有的请求拦截使用/** ,对某个模块下的请求拦截使用：/myPath/* -->
+            <mvc:mapping path="/**"/>
+            <!--排除的URL-->
+            <mvc:exclude-mapping path="/static/css/**"/>
+            <mvc:exclude-mapping path="/static/js/**"/>
+            <mvc:exclude-mapping path="/static/images/**"/>
+            <mvc:exclude-mapping path="/themes/**"/>
+            <mvc:exclude-mapping path="/plugins/**"/>
 
-        <!--验证码-->
-        <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
-            <property name="config">
-                <bean class="com.google.code.kaptcha.util.Config">
-                    <constructor-arg>
-                        <props>
-                            <prop key="kaptcha.border">yes</prop>
-                            <prop key="kaptcha.border.color">105,179,90</prop>
-                            <prop key="kaptcha.textproducer.font.color">blue</prop>
-                            <prop key="kaptcha.image.width">125</prop>
-                            <prop key="kaptcha.image.height">45</prop>
-                            <prop key="kaptcha.textproducer.font.size">45</prop>
-                            <prop key="kaptcha.session.key">code</prop>
-                            <prop key="kaptcha.textproducer.char.length">4</prop>
-                            <prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop>
-                        </props>
-                    </constructor-arg>
-                </bean>
-            </property>
-        </bean>
-        <!--静态资源过滤-->
-       <!-- <mvc:resources mapping="**/*.html" location="/s" />
-        <mvc:resources mapping="**/*.swf" location="/" />
-        <mvc:resources mapping="**/*.js" location="/" />
-        <mvc:resources mapping="**/*.css" location="/" />
-        <mvc:resources mapping="**/*.png" location="/" />
-        <mvc:resources mapping="**/*.jpg" location="/" />
-        <mvc:resources mapping="**/*.gif" location="/" />
-        <mvc:resources mapping="**/*.ico" location="/" />
-        <mvc:resources mapping="**/*.mp4" location="/" />
-        <mvc:resources mapping="**/*.json" location="/" />
+            <mvc:exclude-mapping path="/common/login"/><!-- 登录不拦截 -->
+
+            <bean class="com.cjhb.pms.home.interceptor.CommonInterceptor"/>
+        </mvc:interceptor>
+        <!--定义本地化变更拦截器-->
+        <mvc:interceptor>
+            <!-- 对所有的请求拦截使用/** ,对某个模块下的请求拦截使用：/myPath/* -->
+            <mvc:mapping path="/**"/>
+            <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- 试图解析器 -->
+    <!-- 定义跳转的文件的前后缀 ，视图模式配置-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->
+        <property name="prefix" value="/pages/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 静态资源访问(缓存一周) -->
+    <mvc:resources location="/static/css/" mapping="/static/css/**" cache-period="604800" />
+    <mvc:resources location="/static/js/" mapping="/static/js/**" cache-period="604800" />
+    <mvc:resources location="/static/images/" mapping="/static/images/**" cache-period="604800" />
+    <mvc:resources location="/themes/" mapping="/themes/**" cache-period="604800" />
+    <mvc:resources location="/plugins/" mapping="/plugins/**" cache-period="604800" />
+
+    <!-- 文件上传解析器 -->
+    <!-- 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码 -->
+        <property name="defaultEncoding" value="utf-8" />
+        <!-- 文件大小最大值 :1024K*1024*100 即 100M-->
+        <property name="maxUploadSize" value="1048576000" />
+        <!-- 内存中的最大值 (文件缓存大小) -->
+        <property name="maxInMemorySize" value="40960" />
+        <!-- resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常 -->
+        <property name="resolveLazily" value="true" />
+    </bean>
+
+<!--
+
+    &lt;!&ndash; 定义国际化消息 &ndash;&gt;
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        &lt;!&ndash; 其中basename用来指定properties文件的通用名,如实例中的messages_en.properties,messages_ja.properties通用名都是messages &ndash;&gt;
+        <property name="basename" value="messages/ApplicationResources" />
+        <property name="useCodeAsDefaultMessage" value="true" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
+    &lt;!&ndash; 获取本地 &ndash;&gt;
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+
+    &lt;!&ndash; 开启这个配置，spring才能识别@Scheduled注解 &ndash;&gt;
+    <task:annotation-driven scheduler="qbScheduler" mode="proxy" />
+    <task:scheduler id="qbScheduler" pool-size="10" />
 -->
+
+    <!--验证码-->
+    <!--<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <prop key="kaptcha.border">yes</prop>
+                        <prop key="kaptcha.border.color">105,179,90</prop>
+                        <prop key="kaptcha.textproducer.font.color">blue</prop>
+                        <prop key="kaptcha.image.width">125</prop>
+                        <prop key="kaptcha.image.height">45</prop>
+                        <prop key="kaptcha.textproducer.font.size">45</prop>
+                        <prop key="kaptcha.session.key">code</prop>
+                        <prop key="kaptcha.textproducer.char.length">4</prop>
+                        <prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>-->
 
 </beans>
 

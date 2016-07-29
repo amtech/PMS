@@ -20,22 +20,41 @@
 
     <!-- 使用druid数据源 -->
     <import resource="classpath:config/spring-database.xml"/>
-    <!--配置mybatis-->
+    <!--spring和MyBatis完美整合 -->
     <import resource="classpath:config/spring-mybatis.xml"/>
 
 
-
-    <!-- 声明式事务 -->
-    <tx:annotation-driven transaction-manager="transactionManager"
-                          proxy-target-class="true" />
-
+    <!-- 配置事务管理器 -->
     <!-- 事务配置：以下是事务及AOP的配置 transaction manager, use JtaTransactionManager for global tx-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
+    <!-- 定义事务拦截器 -->
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager"></property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="save*">PROPAGATION_REQUIRED</prop>
+                <prop key="update">PROPAGATION_REQUIRED</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="query*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 使用注解方式的事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <!-- aop注解支持 <aop:aspectj-autoproxy/> <bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator"/> -->
+
+
+
+
     <!--通知配置-->
-    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+    <!--<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="add*" propagation="REQUIRED" />
             <tx:method name="append*" propagation="REQUIRED" />
@@ -56,11 +75,11 @@
             <tx:method name="*" propagation="SUPPORTS" />
         </tx:attributes>
     </tx:advice>
-
+-->
     <!--aop 切面配置-->
-    <aop:config>
+    <!--<aop:config>
         <aop:pointcut id="transactionPointcut" expression="execution(* com.cjhb.pms.service..*Impl.*(..))" />
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
     </aop:config>
-
+-->
 </beans>
