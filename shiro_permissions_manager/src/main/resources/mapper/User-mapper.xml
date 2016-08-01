@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- NAMESPACE必须和接口的类路径一样 -->
+<mapper namespace="org.springagg.web.dao.UserMapper">
+    <!-- 创建用户 -->
+    <insert id="create" parameterType="User">
+        insert into tb_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            username, password,
+            <if test="roles != null"> roles
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{username},#{password},
+            <if test="roles != null"> #{roles}
+            </if>
+        </trim>
+    </insert>
+    <!-- 编辑用户 -->
+    <update id="update" parameterType="User">
+        update tb_user
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="roles != null">roles = #{roles}</if>
+        </set>
+        where uid = #{uid}
+    </update>
+    <!-- 删除用户 -->
+    <delete id="delete" parameterType="int"> delete from tb_user where
+        uid = #{uid}
+    </delete>
+    <!-- 获取用户 -->
+    <select id="get" parameterType="int" resultType="User"> select * from
+        tb_user where uid = #{uid}
+    </select>
+    <!-- 查找用户 -->
+    <select id="find" parameterType="string" resultType="User"> select
+        * from tb_user where username = #{username}
+    </select>
+    <!-- 所有用户 -->
+    <select id="all" resultType="User"> select u.uid recid, u.* from tb_user u
+    </select>
+</mapper>

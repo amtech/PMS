@@ -22,7 +22,7 @@
         <module>portal</module>
         <module>domain</module>
         <module>mybatis</module>
-        <module>demo</module>
+        <module>shiro_permissions_manager</module>
     </modules>
 
     <!--配置父工程主要配置-->
@@ -47,7 +47,8 @@
                 <filtering>true</filtering>
             </testResource>
         </testResources>-->
-        <!--maven 插件配置-->
+
+        <!--maven 插件配置(jdk 1.7 )-->
         <pluginManagement>
             <plugins>
                 <plugin>

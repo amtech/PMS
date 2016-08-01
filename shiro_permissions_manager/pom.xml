@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>edgar_learn_resource</artifactId>
+        <groupId>com.cjhb.pms</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.cjhb.pms</groupId>
+    <artifactId>shiro_permissions_manager</artifactId>
+    <name>com.cjhb.pms.shiro_permissions_manager</name>
+    <description>后台权限管理系统</description>
+
+    <!--配置jar包依赖-->
+    <dependencies>
+        <!--依赖公共包-->
+        <dependency>
+            <groupId>com.cjhb.pms</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--依赖service包-->
+        <dependency>
+            <groupId>com.cjhb.pms</groupId>
+            <artifactId>service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--依赖dao包-->
+        <dependency>
+            <groupId>com.cjhb.pms</groupId>
+            <artifactId>dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--依赖工具包-->
+        <dependency>
+            <groupId>com.cjhb.pms</groupId>
+            <artifactId>utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+</project>

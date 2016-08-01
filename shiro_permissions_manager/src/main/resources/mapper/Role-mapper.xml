@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- NAMESPACE必须和接口的类路径一样 -->
+<mapper namespace="org.springagg.web.dao.RoleMapper">
+
+    <!-- 创建角色 -->
+    <insert id="create" parameterType="Role"> insert into tb_role (role,
+        description, resources) values (#{role}, #{description},
+        #{resources})
+    </insert>
+
+    <!-- 编辑角色 -->
+    <update id="update" parameterType="Role">
+        update tb_role
+        <set>
+            <if test="role != null">role = #{role},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="resources != null">resources = #{resources}</if>
+        </set>
+        where rid = #{rid}
+    </update>
+
+    <!-- 删除角色 -->
+    <delete id="delete" parameterType="int"> delete from tb_role where
+        rid = #{rid}
+    </delete>
+
+    <!-- 获取角色 -->
+    <select id="get" parameterType="int" resultType="Role"> select * from
+        tb_role where rid = #{rid}
+    </select>
+
+    <!-- 所有角色 -->
+    <select id="all" resultType="Role"> select r.rid recid, r.* from tb_role r
+    </select>
+</mapper>

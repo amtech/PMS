@@ -22,6 +22,7 @@ dao/target/*
 home/target/*
 portal/target/*
 mybatis/target/*
+shiro_permissions_manager/target/*
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

@@ -19,6 +19,8 @@
     <properties>
         <!-- spring版本号 -->
         <spring.version>4.1.7.RELEASE</spring.version>
+        <!--SHIRO 权限管理版本号-->
+        <shiro.version>1.2.3</shiro.version>
         <!-- mybatis版本号 -->
         <mybatis.version>3.2.8</mybatis.version>
         <mybatis.generator.version>1.3.2</mybatis.generator.version>
@@ -29,10 +31,20 @@
         <mysql.version>5.1.33</mysql.version>
         <!--alibaba druid连接池-->
         <druid.version>1.0.13</druid.version>
+        <!-- aspectj 版本号 -->
+        <aspectj.version>1.8.4</aspectj.version>
     </properties>
 
         <!--配置依赖-->
         <dependencies>
+            <!--依赖web包-->
+            <dependency>
+                <groupId>com.cjhb.pms</groupId>
+                <artifactId>shiro_permissions_manager</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- Test start-->
             <!--junit 4 测试jar-->
             <dependency>
                 <groupId>junit</groupId>
@@ -41,8 +53,8 @@
                 <!-- 表示开发的时候引入，发布的时候不会加载此包 -->
                 <scope>test</scope>
             </dependency>
-
-            <!-- spring核心包 start -->
+            <!-- Test end -->
+            <!-- Spring Framework 核心包 start -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
@@ -108,13 +120,54 @@
             </dependency>
             <!-- spring核心包 end -->
 
-            <!-- mybatis核心包 -->
+            <!-- APACHE SHIRO 权限管理包 start -->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-core</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-ehcache</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-web</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-quartz</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <!--APACHE SHIRO 权限管理包 end-->
+
+            <!-- MyBatis orm框架相关包 start-->
+            <!--mybatis core包-->
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>
                 <version>${mybatis.version}</version>
             </dependency>
-            <!--mybatis.generator依赖包-->
+            <!-- mybatis/spring包 -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>1.2.2</version>
+            </dependency>
+            <!--mybatis-ehcache 缓存包 -->
+            <dependency>
+                <groupId>org.mybatis.caches</groupId>
+                <artifactId>mybatis-ehcache</artifactId>
+                <version>1.0.3</version>
+            </dependency>
+            <!-- MGB插件(mybatis.generator)依赖包-->
             <dependency>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-core</artifactId>
@@ -125,13 +178,7 @@
                 <artifactId>mybatis-generator-core-patch</artifactId>
                 <version>${mybatis.generator.version}</version>
             </dependency>
-
-            <!-- mybatis/spring包 -->
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis-spring</artifactId>
-                <version>1.2.2</version>
-            </dependency>
+            <!--  MyBatis orm框架相关包 end -->
 
             <!--mysql 数据库驱动 链接jar包-->
             <dependency>
@@ -140,54 +187,27 @@
                 <version>${mysql.version}</version>
             </dependency>
 
-            <!-- java ee jar 包 -->
-            <dependency>
-                <groupId>javax</groupId>
-                <artifactId>javaee-api</artifactId>
-                <version>7.0</version>
-            </dependency>
-
             <!-- dbcp的jar包，用来在applicationContext.xml中配置数据库 -->
-            <dependency>
+            <!--<dependency>
                 <groupId>commons-dbcp</groupId>
                 <artifactId>commons-dbcp</artifactId>
                 <version>1.2.2</version>
-            </dependency>
+            </dependency>-->
 
-            <!-- JSTL标签类 -->
+            <!-- Alibaba start-->
+            <!--数据库连接池包-->
             <dependency>
-                <groupId>jstl</groupId>
-                <artifactId>jstl</artifactId>
-                <version>1.2</version>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
             </dependency>
-
-            <!-- 日志文件管理包 -->
-            <!-- log start -->
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-
-            <!-- 格式化对象，方便输出日志 -->
+            <!--json处理包-->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>1.1.41</version>
+                <version>1.2.3</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <!-- log end -->
+            <!-- Alibaba end-->
 
             <!-- 映入JSON -->
             <!-- jackson -->
@@ -217,32 +237,93 @@
                 <version>1.9.13</version>
             </dependency>
 
-            <!-- 上传组件包 -->
+            <!-- aspectj相关jar包 -->
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+
+            <!-- Commons (上传组件包) start-->
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+            </dependency>
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
                 <version>1.3.1</version>
             </dependency>
-             <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.4</version>
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>3.2.1</version>
             </dependency>
-
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>1.9</version>
             </dependency>
 
-            <!--数据库连接池-->
+            <!-- Servlet start -->
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid</artifactId>
-                <version>${druid.version}</version>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet.jsp</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>2.2</version>
+            </dependency>
+            <!-- JSTL标签类 -->
+            <dependency>
+                <groupId>jstl</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <!-- Servlet end -->
+
+            <!-- java ee jar 包 -->
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>7.0</version>
             </dependency>
 
-            <!--google 二维码-->
+            <!-- log(日志文件管理包) start -->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <!-- 格式化对象，方便输出日志 -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <!-- log end -->
+
+            <!--Google start-->
+            <!--google-kaptcha 二维码-->
             <dependency>
                 <groupId>com.google.code.kaptcha</groupId>
                 <artifactId>kaptcha</artifactId>
@@ -250,8 +331,5 @@
             </dependency>
 
 
-
         </dependencies>
-
-
 </project>

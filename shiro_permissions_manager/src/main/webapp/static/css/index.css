@@ -1,0 +1,5 @@
+@CHARSET "UTF-8";
+html, body {height: 100%; width: 100%;}
+body { padding: 0; margin: 0; font-size: 13.5px; }
+/* 重置w2ui的字体大小，否则汉字无法清晰显示 */
+*[class^="w2ui"] {font-size: 12px; }

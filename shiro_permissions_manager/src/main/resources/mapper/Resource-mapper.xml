@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- NAMESPACE必须和接口的类路径一样 -->
+<mapper namespace="org.springagg.web.dao.ResourceMapper">
+
+    <!-- 创建资源 -->
+    <insert id="create" parameterType="Resource"> insert into tb_resource
+        (name, type, permissions, url, pid, sorted) values (#{name},
+        #{type},#{permissions},#{url}, #{pid},#{sorted})
+    </insert>
+
+    <!-- 编辑资源 -->
+    <update id="update" parameterType="Resource">
+        update tb_resource
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="permissions != null">permissions = #{permissions},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="sorted != null">sorted = #{sorted},</if>
+        </set>
+        where reid = #{reid}
+    </update>
+
+    <!-- 删除资源 -->
+    <delete id="delete" parameterType="int"> delete from tb_resource
+        where reid = #{reid}
+    </delete>
+
+    <!-- 获取资源 -->
+    <select id="get" parameterType="int" resultType="Resource"> select * from
+        tb_resource where reid = #{reid}
+    </select>
+
+    <!-- 所有资源 -->
+    <select id="all" resultType="Resource"> select re.reid recid, re.* from tb_resource re order by re.sorted
+    </select>
+</mapper>

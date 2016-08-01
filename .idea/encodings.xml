@@ -8,11 +8,9 @@
     <file url="file://$PROJECT_DIR$/common/src/main/java/com/cjhb/pms/common/OracleDialect.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/common/src/main/java/com/cjhb/pms/common/interceptor/PaginationInterceptor.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/dao" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/dao/src/main/java/com/cjhb/pms/dao/home/user/UserInfoDao.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/dao/src/main/java/com/cjhb/pms/dao/home/user/UserInfoMapper.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/demo" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/domain" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/domain/src/main/java/com/cjhb/pms/domain/home/user/UserInfo.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/domain/src/main/java/com/cjhb/pms/domain/home_pojo/DeptInfo.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/domain/src/main/java/com/cjhb/pms/domain/home_pojo/UserInfo.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/home" charset="UTF-8" />
@@ -23,9 +21,8 @@
     <file url="file://$PROJECT_DIR$/mybatis" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/portal" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/ssm" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/shiro_permissions_manager" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/utils" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/utils/src/main/java/com/cjhb/pms/utils/IP/IPAddressUtil.java" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
